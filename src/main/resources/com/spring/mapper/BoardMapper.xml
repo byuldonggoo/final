@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.mapper.BoardMapper">  <!-- BoardVO 임포트해서 쓸수있게 지정 -->
+
+
+	<select id="getList" resultType="com.spring.domain.BoardVO">
+	<![CDATA[
+		select * from main_board where bdnum > 0 
+		]]>
+	</select>
+	
+	<insert id="insert">
+		insert into main_board (bdnum, bdtitle,content,writer,regdate,delcheck)
+		values (board_seq.nextval, #{bdtitle}, #{content}, #{writer},sysdate, #{delcheck})
+	</insert>
+
+	<insert id="insertSelectKey">
+
+		<selectKey keyProperty="bdnum" order="BEFORE"
+			resultType="long">
+			select board_seq.nextval from dual
+		</selectKey>
+
+		insert into main_board (bdnum, bdtitle,content,writer,regdate,delcheck)
+		values (#{bdnum},#{bdtitle}, #{content}, #{writer},sysdate,#{delcheck})
+	</insert>
+	
+	<select id="read" resultType="com.spring.domain.BoardVO">
+		select * from main_board where bdnum = #{bdnum}
+	</select>
+	
+	<delete id="delete">
+		delete main_board where bdnum = #{bdnum}
+	</delete>
+	
+	<update id="update">
+		update main_board
+		set bdtitle= #{bdtitle},
+		content= #{content},
+		writer = #{writer},
+		correcdate = sysdate
+		where bdnum = #{bdnum}
+	</update>
+	
+	
+</mapper>

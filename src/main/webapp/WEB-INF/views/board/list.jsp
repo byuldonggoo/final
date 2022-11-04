@@ -10,6 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="${path}/resources/css/bootstrap.min.css">
+     <script type="text/javascript" src="${path}/resources/js/jquery-3.6.0.min.js"></script>
 
 <style>
 
@@ -19,8 +20,35 @@
         font-family: 'Poor Story', sans-serif;
         font-size:27px;
   }
+ #regbtn{
+ font-family: 'Poor Story', sans-serif;
+ font-size:20px;
+ }
+ #regbtn:hover{
+ opacity:0.7;
+ }
+ 
+ a{
+ 	text-decoration: none;
+ }
+ 
+ a:hover{
+ 	text-decoration:underline;
+ }
 
-</style>    
+</style>  
+
+<script type="text/javascript">
+
+function doAction() {
+	const registerButton = document.getElementById("regbtn");
+	registerButton.addEventListener('click', () => {
+		location.href ='/board/register';
+	    });
+  };
+
+</script>
+
     
 </head>
 <body>
@@ -68,11 +96,16 @@
       </nav>
 
 <div class="container mt-5">
+	<div class="row">
+		<div class="col-md-2 mb-2" style="margin-left:1180px;">
+		<button type="button" class="btn btn-primary btn-lg" id="regbtn" onclick="doAction()">새글 등록</button>
+		</div>
+	</div>
     <div class="row">
     <c:forEach items="${list}" var="board">
         <div class="col-md-4 b">
             <div class="card mb-3">
-                <h3 class="card-header"><c:out value="${board.bdtitle }"/></h3>
+                <h3 class="card-header"><a href='/board/get?bdnum=<c:out value="${board.bdnum }"/>'><c:out value="${board.bdtitle }"/></a></h3>
                 <img src="${path}/resources/img/parrot.jpg" class="d-block user-select-none" width="100%" height="100%" aria-label="Placeholder: Image cap" focusable="false" role="img" preserveAspectRatio="xMidYMid slice" viewBox="0 0 318 180" style="font-size:1.125rem;text-anchor:middle">
                     <rect width="100%" height="100%" fill="#868e96"></rect>
                 </img>
@@ -109,6 +142,48 @@
     </ul>
 </div>
 
+<div class="modal" id="listModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>처리가 완료되었습니다.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
 </div>
+
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+	
+	var result='<c:out value="${result}"/>';
+	checkModal(result);
+	
+	function checkModal(result){
+		if(result===''){
+			return;
+		}
+		if(parseInt(result)>0){
+			$(".modal-body").html(
+			"게시글 " + parseInt(result) + "번이 등록되었습니다.");
+		}
+		$("#listModal").modal("show");
+	}
+});
+
+</script>
+
+
 </body>
 </html>

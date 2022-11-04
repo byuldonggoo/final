@@ -30,7 +30,7 @@ public class BoardController {
 	
 	@GetMapping("/register")
 	public void register() {
-		
+		//입력페이지를 보여주는 역할만을 하기 때문에 별도의 처리가 필요하지 않음.
 	}
 	
 	@PostMapping("/register")
@@ -41,10 +41,10 @@ public class BoardController {
 		return "redirect:/board/list";
 	}
 	
-	@GetMapping("/get")
+	@GetMapping({"/get","/modify"})
 	public void get(@RequestParam("bdnum")Long bdnum, Model model) {
 		
-		log.info("/get");
+		log.info("/get or modify");
 		model.addAttribute("board",service.get(bdnum));
 	}
 	

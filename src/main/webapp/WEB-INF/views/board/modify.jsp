@@ -14,26 +14,41 @@
 </head>
 <body>
     <div class="container mt-5">
-    <h1 class="text-center" style="font-size:50px;">Register</h1>
+    <h1 class="text-center" style="font-size:50px;">Modify</h1>
     </div>
-    <form action="/board/register" method="post" id="registerform">
+    <form action="/board/modify" method="post" id="registerform">
     <div class="container w-50">
         <div class="row">
-            <div class="form-group">
+             <div class="form-group">
                 <label style="font-size:30px;" class="col-form-label mt-4" for="inputDefault">Title</label>
-                <input type="text" class="form-control" placeholder="" name="bdtitle">
+                <input type="text" class="form-control" name="bdtitle" value="${board.bdtitle }">
               </div>
               <div class="form-group">
                 <label style="font-size:30px;" for="exampleTextarea" class="form-label mt-4">Content</label>
-                <textarea class="form-control" id="exampleTextarea" rows="10" name="content"></textarea>
+                <textarea class="form-control" id="exampleTextarea"rows="10" name="content">${board.content }</textarea>
               </div>
               <input type="hidden" name="writer" value="나중에"/><!-- 로그인하면 닉네임으로 작성자넣기 -->
               <input type="hidden" name="delcheck" value="N"/>
-              <div class="mt-5">
-                <div class="d-grid gap-2">
-                    <button class="btn btn-lg btn-primary" type="submit">Submit</button>
+              <input type="hidden" name="bdnum" value='<c:out value ="${board.bdnum }"/>'/>
+              
+              <div class="row mt-5">
+            <div class="col-md-4 b">
+            	<div class="d-grid gap-2">
+                    <button class="btn btn-lg btn-primary" type="submit">Modify</button>
+                </div>
+			</div>
+            <div class="col-md-4 b">
+            	<div class="d-grid gap-2">
+                    <button class="btn btn-lg btn-primary" type="submit">Remove</button>
                 </div>
             </div>
+            <div class="col-md-4 b">
+            	<div class="d-grid gap-2">
+                    <button class="btn btn-lg btn-primary" type="submit">List</button>
+                </div>
+            </div>
+        	</div>
+              
         </div>
     </div>
     </form>

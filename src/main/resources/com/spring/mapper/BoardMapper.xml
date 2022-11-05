@@ -45,5 +45,22 @@
 		where bdnum = #{bdnum}
 	</update>
 	
+	<select id="getListWithPaging" resultType="com.spring.domain.BoardVO">
+		<![CDATA[
+			select bdnum, bdtitle, content, writer, regdate, correcdate, delcheck 
+			from(
+				select /*+INDEX_DESC(main_board pk_board) */
+					rownum rn, bdnum, bdtitle, content, writer, regdate, correcdate ,delcheck
+				from main_board
+			where rownum <= #{pageNum}*#{amount}
+			)
+			where rn > (#{pageNum}-1)*#{amount}
+		]]>
+	</select>
+	
+	<select id="getTotalCount" resultType="int">
+		select count(*) from main_board where bdnum>0
+	</select>
+	
 	
 </mapper>

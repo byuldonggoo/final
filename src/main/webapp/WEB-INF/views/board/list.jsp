@@ -88,6 +88,13 @@ function doAction() {
               </li>
             </ul>
             <form class="d-flex">
+	            <div class="form-group">
+			      <select class="form-select" id="exampleSelect1">
+			        <option>Title</option>
+			        <option>Content</option>
+			        <option>Writer</option>
+			      </select>
+			    </div>
               <input class="form-control me-sm-2" type="text" placeholder="Search">
               <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
             </form>
@@ -105,7 +112,7 @@ function doAction() {
     <c:forEach items="${list}" var="board">
         <div class="col-md-4 b">
             <div class="card mb-3">
-                <h3 class="card-header"><a href='/board/get?bdnum=<c:out value="${board.bdnum }"/>'><c:out value="${board.bdtitle }"/></a></h3>
+                <h3 class="card-header"><a class='move' href='<c:out value="${board.bdnum}"/>'><c:out value="${board.bdtitle}"/></a></h3>
                 <img src="${path}/resources/img/parrot.jpg" class="d-block user-select-none" width="100%" height="100%" aria-label="Placeholder: Image cap" focusable="false" role="img" preserveAspectRatio="xMidYMid slice" viewBox="0 0 318 180" style="font-size:1.125rem;text-anchor:middle">
                     <rect width="100%" height="100%" fill="#868e96"></rect>
                 </img>
@@ -116,31 +123,33 @@ function doAction() {
     </div>
 </div>
 
+<!-- 페이지번호 -->
+
 <div class="container mb-5">
     <ul class="pagination float-end">
-      <li class="page-item disabled">
-        <a class="page-link" href="#">&laquo;</a>
+    
+      <li id="prev" class="page-item"> <!-- disabled -->
+        <a class="page-link page" href="${pageMaker.startPage -1 }">&laquo;</a>
       </li>
-      <li class="page-item active">
-        <a class="page-link" href="#">1</a>
+      
+      <c:forEach var="num" begin="${pageMaker.startPage }" end="${pageMaker.endPage }">
+      <li class="page-item ${pageMaker.cri.pageNum == num ? "active":"" }"> <!-- 클릭한 페이지 클래스추가 active (검은색으로 바뀜)  -->
+        <a class="page-link page" href="${num }">${num }</a>
       </li>
-      <li class="page-item">
-        <a class="page-link" href="#">2</a>
-      </li>
-      <li class="page-item">
-        <a class="page-link" href="#">3</a>
-      </li>
-      <li class="page-item">
-        <a class="page-link" href="#">4</a>
-      </li>
-      <li class="page-item">
-        <a class="page-link" href="#">5</a>
-      </li>
-      <li class="page-item">
-        <a class="page-link" href="#">&raquo;</a>
+      </c:forEach>
+      
+      <li id="next" class="page-item">
+        <a class="page-link page" href="${pageMaker.endPage +1 }">&raquo;</a>
       </li>
     </ul>
 </div>
+
+<form id='actionForm' action="/board/list" method='get'>
+	<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum }'>
+	<input type='hidden' name='amount' value='${pageMaker.cri.amount }'>
+</form>
+
+<!-- 모달창 -->
 
 <div class="modal" id="listModal">
   <div class="modal-dialog" role="document">
@@ -167,11 +176,12 @@ function doAction() {
 
 $(document).ready(function(){
 	
-	var result='<c:out value="${result}"/>';
+	//모달창 글등록
+	let result='<c:out value="${result}"/>';
 	checkModal(result);
 	
 	function checkModal(result){
-		if(result===''){
+		if(result==='' || history.state){
 			return;
 		}
 		if(parseInt(result)>0){
@@ -180,6 +190,40 @@ $(document).ready(function(){
 		}
 		$("#listModal").modal("show");
 	}
+	
+	//prev,next버튼 disabled 클래스추가 조건
+	const prev='<c:out value="${pageMaker.prev}"/>';
+	const next='<c:out value="${pageMaker.next}"/>';
+	console.log(prev);
+	console.log(next);
+	prevcheck(prev);
+	nextcheck(next);
+	
+	function prevcheck(prev){
+		if(prev!=='true'){
+			$("#prev").addClass('disabled');
+		}
+	}
+	
+	function nextcheck(next){
+		if(next!=='true'){
+			$("#next").addClass('disabled');
+		}
+	}
+	
+	const actionForm = $("#actionForm");
+	$(".page").on("click",function(e){
+		e.preventDefault();
+		actionForm.find("input[name='pageNum']").val($(this).attr("href"));
+		actionForm.submit();
+	});
+	
+	$(".move").on("click",function(e){
+		e.preventDefault();
+		actionForm.append("<input type='hidden' name='bdnum' value='" + $(this).attr("href") + "'>");  
+		actionForm.attr("action","/board/get");
+		actionForm.submit();
+	});
 });
 
 </script>

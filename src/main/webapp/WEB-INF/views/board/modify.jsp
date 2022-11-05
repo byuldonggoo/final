@@ -11,6 +11,31 @@
     <title>Document</title>
     <link rel="stylesheet" href="${path}/resources/css/bootstrap.min.css">
     <script type="text/javascript" src="${path}/resources/js/jquery-3.6.0.min.js"></script>
+    
+   <!--  <script type="text/javascript">
+    
+    function buttonRoute(){
+    	const buttons = document.querySelectorAll('button');
+    	for (let i = 0; i < buttons.length; i++) {
+    		  let item = buttons[i].dataset.oper;
+    		  let form = document.querySelector('form');
+    		  if(item==='remove'){
+    			  const link='/board/remove'
+    				  form.setAttribute('action',link);
+    				  form.submit();
+    			  return;
+    		  }
+    		  else if(item==='list'){
+    			  const link='/board/list'
+    				  form.setAttribute('action',link);
+    				  form.setAttribute('method','get');
+    				  form.reset();
+    				  form.submit();
+    			  return;
+    		  }  
+    		}	
+    }
+    </script> -->
 </head>
 <body>
     <div class="container mt-5">
@@ -30,21 +55,24 @@
               <input type="hidden" name="writer" value="나중에"/><!-- 로그인하면 닉네임으로 작성자넣기 -->
               <input type="hidden" name="delcheck" value="N"/>
               <input type="hidden" name="bdnum" value='<c:out value ="${board.bdnum }"/>'/>
+              <input type="hidden" name="pageNum" value='<c:out value ="${cri.pageNum }"/>'/>
+              <input type="hidden" name="amount" value='<c:out value ="${cri.amount }"/>'/>
+              
               
               <div class="row mt-5">
             <div class="col-md-4 b">
             	<div class="d-grid gap-2">
-                    <button class="btn btn-lg btn-primary" type="submit">Modify</button>
+                    <button data-oper='modify' class="btn btn-lg btn-primary" type="submit">Modify</button>
                 </div>
 			</div>
             <div class="col-md-4 b">
             	<div class="d-grid gap-2">
-                    <button class="btn btn-lg btn-primary" type="submit">Remove</button>
+                    <button data-oper='remove' class="btn btn-lg btn-primary" type="submit">Delete</button>
                 </div>
             </div>
             <div class="col-md-4 b">
             	<div class="d-grid gap-2">
-                    <button class="btn btn-lg btn-primary" type="submit">List</button>
+                    <button data-oper='list' class="btn btn-lg btn-primary" type="submit">List</button>
                 </div>
             </div>
         	</div>
@@ -52,4 +80,34 @@
         </div>
     </div>
     </form>
+   
+  	<script type="text/javascript">
+  	
+  		$(document).ready(function(){
+  			const formObj = $("form");
+  			
+  			$('button').on("click",function(e){
+  				e.preventDefault();
+  			
+  			let operation=$(this).data("oper");
+  			
+  			console.log(operation);
+  			
+  			if(operation==='remove'){
+  				formObj.attr("action","/board/remove");
+  			}else if(operation==='list'){
+  				formObj.attr("action","/board/list").attr("method","get");
+  				const pageNumTag=$("input[name='pageNum']").clone();
+  				const amountTag=$("input[name='amount']").clone();
+  				
+  				formObj.empty();
+  				formObj.append(pageNumTag);
+  				formObj.append(amountTag);
+  			}
+  			formObj.submit();
+  			});
+  		});
+  	</script>
+   
+   
     </body>

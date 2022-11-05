@@ -19,10 +19,10 @@ textarea {
     resize: none;
   }
     </style>
+    
 </head>
 <body>
     
-    <form action="/board/register" method="post" id="registerform">
     <div class="container w-50">
         <div class="row">
             <div class="form-group">
@@ -43,16 +43,40 @@ textarea {
        
             <div class="row mb-5 mt-5">
                 <div class="col-md-4 b">
-                    <button data-oper='modify' class="btn btn-lg btn-primary" style="width:100%" type="button" onclick="location.href='/board/modify?bdnum=<c:out value="${board.bdnum}"/>'">Modify</button>
+                    <button data-oper='modify' class="btn btn-lg btn-primary" style="width:100%" type="button">Modify</button>
                 </div>
                 <div class="col-md-4 b">
-                    <button class="btn btn-lg btn-primary" style="width:100%" type="button">Delete</button>
+                    <button data-oper='remove' class="btn btn-lg btn-primary" style="width:100%" type="button">Delete</button>
                 </div>
                 <div class="col-md-4 b">
-                    <button data-oper='list' class="btn btn-lg btn-primary" style="width:100%" type="button" onclick="location.href='/board/list'">List</button>
+                    <button data-oper='list' class="btn btn-lg btn-primary" style="width:100%" type="button">List</button>
                 </div>
+                <form id='operForm' action="/board/modify" method="get">
+                	<input type="hidden" id='bdnum' name='bdnum' value='<c:out value="${board.bdnum }"/>'>
+                	<input type='hidden' name='pageNum' value='<c:out value="${cri.pageNum }"/>'>
+                	<input type='hidden' name='amount' value='<c:out value="${cri.amount }"/>'>
+            </form>
             </div>
         </div>
-    </div>
-    </form>
+        
+        <script type="text/javascript">
+        	$(document).ready(function(){
+        		const operForm=$("#operForm");
+        		
+        		$("button[data-oper='modify']").on("click",function(e){
+        			operForm.attr("action","/board/modify").submit();
+        		});
+        		
+        		$("button[data-oper='list']").on("click",function(e){
+        			operForm.find("#bdnum").remove()
+        			operForm.attr("action","/board/list");
+        			operForm.submit();
+        		});
+        		
+        		$("button[data-oper='remove']").on("click",function(e){
+        			operForm.attr("action","/board/remove").attr("method","post").submit();
+        		});
+        	});
+        	
+        </script>
     </body>

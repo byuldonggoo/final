@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.spring.domain.BoardVO;
+import com.spring.domain.Criteria;
 //import com.spring.domain.Criteria;
 import com.spring.mapper.BoardMapper;
 
@@ -46,9 +47,28 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
+	public List<BoardVO> getList(Criteria cri) {
+		log.info("get List with criteria: " + cri);
+		
+		return mapper.getListWithPaging(cri);
+	}
+
+	@Override
+	public int getTotal(Criteria cri) {
+		log.info("get total count");
+		return mapper.getTotalCount(cri);
+	}
+	
+	
+
+	/*
+	@Override
 	public List<BoardVO> getList() {
 		log.info("getList.........");
 		return mapper.getList();
 	}
+	*/
+	
+	
 	
 }

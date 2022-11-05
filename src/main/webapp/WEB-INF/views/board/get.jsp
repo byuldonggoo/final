@@ -2,27 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="${path}/resources/css/bootstrap.min.css">
-    <script type="text/javascript" src="${path}/resources/js/jquery-3.6.0.min.js"></script>
-    <style>
-textarea {
-    width: 100%;
-    height: 6.25em;
-    border: none;
-    resize: none;
-  }
-    </style>
-    
-</head>
-<body>
-    
+
+<%@include file="../includes/header.jsp" %>
+
     <div class="container w-50">
         <div class="row">
             <div class="form-group">
@@ -55,6 +37,8 @@ textarea {
                 	<input type="hidden" id='bdnum' name='bdnum' value='<c:out value="${board.bdnum }"/>'>
                 	<input type='hidden' name='pageNum' value='<c:out value="${cri.pageNum }"/>'>
                 	<input type='hidden' name='amount' value='<c:out value="${cri.amount }"/>'>
+                	<input type='hidden' name='keyword' value='<c:out value="${cri.keyword }"/>'>
+                	<input type='hidden' name='type' value='<c:out value="${cri.type }"/>'>
             </form>
             </div>
         </div>

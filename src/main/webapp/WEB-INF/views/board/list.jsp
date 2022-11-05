@@ -2,105 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="${path}/resources/css/bootstrap.min.css">
-     <script type="text/javascript" src="${path}/resources/js/jquery-3.6.0.min.js"></script>
 
-<style>
-
-@import url('https://fonts.googleapis.com/css2?family=Poor+Story&display=swap');
-
- h3{
-        font-family: 'Poor Story', sans-serif;
-        font-size:27px;
-  }
- #regbtn{
- font-family: 'Poor Story', sans-serif;
- font-size:20px;
- }
- #regbtn:hover{
- opacity:0.7;
- }
- 
- a{
- 	text-decoration: none;
- }
- 
- a:hover{
- 	text-decoration:underline;
- }
-
-</style>  
-
-<script type="text/javascript">
-
-function doAction() {
-	const registerButton = document.getElementById("regbtn");
-	registerButton.addEventListener('click', () => {
-		location.href ='/board/register';
-	    });
-  };
-
-</script>
-
-    
-</head>
-<body>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
-    
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">Navbar</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarColor01">
-            <ul class="navbar-nav me-auto">
-              <li class="nav-item">
-                <a class="nav-link active" href="#">Home
-                  <span class="visually-hidden">(current)</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Features</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Pricing</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">Separated link</a>
-                </div>
-              </li>
-            </ul>
-            <form class="d-flex">
-	            <div class="form-group">
-			      <select class="form-select" id="exampleSelect1">
-			        <option>Title</option>
-			        <option>Content</option>
-			        <option>Writer</option>
-			      </select>
-			    </div>
-              <input class="form-control me-sm-2" type="text" placeholder="Search">
-              <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-            </form>
-          </div>
-        </div>
-      </nav>
+<%@include file="../includes/header.jsp" %>
 
 <div class="container mt-5">
 	<div class="row">
@@ -147,6 +50,8 @@ function doAction() {
 <form id='actionForm' action="/board/list" method='get'>
 	<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum }'>
 	<input type='hidden' name='amount' value='${pageMaker.cri.amount }'>
+	<input type='hidden' name='type' value='<c:out value="${ pageMaker.cri.type }"/>'>
+	<input type='hidden' name='keyword' value='<c:out value="${ pageMaker.cri.keyword }"/>'>
 </form>
 
 <!-- 모달창 -->
@@ -224,6 +129,34 @@ $(document).ready(function(){
 		actionForm.attr("action","/board/get");
 		actionForm.submit();
 	});
+	
+	const searchForm=$("#searchForm");
+	$("#searchForm button").on("click",function(e){
+		
+		/*
+		if(!searchForm.find("option:selected").val()){
+			alert("검색종류를 선택하세요");
+			return false;
+		}
+		*/
+		
+		//선택된 option값 읽기
+		if(!searchForm.find("input[name='keyword']").val()){
+			//sweetalert2 사용
+			Swal.fire({
+				  title: 'Error!',
+				  text: '키워드를 입력하세요',
+				  icon: 'error',
+				  confirmButtonText: 'OK'
+				})
+			return false;
+		}
+		//pageNum에 값 1 넣기
+		searchForm.find("input[name='pageNum']").val("1");
+		e.preventDefault();
+		
+		searchForm.submit();
+	})
 });
 
 </script>

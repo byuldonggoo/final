@@ -2,46 +2,12 @@
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="${path}/resources/css/bootstrap.min.css">
-    <script type="text/javascript" src="${path}/resources/js/jquery-3.6.0.min.js"></script>
-    
-   <!--  <script type="text/javascript">
-    
-    function buttonRoute(){
-    	const buttons = document.querySelectorAll('button');
-    	for (let i = 0; i < buttons.length; i++) {
-    		  let item = buttons[i].dataset.oper;
-    		  let form = document.querySelector('form');
-    		  if(item==='remove'){
-    			  const link='/board/remove'
-    				  form.setAttribute('action',link);
-    				  form.submit();
-    			  return;
-    		  }
-    		  else if(item==='list'){
-    			  const link='/board/list'
-    				  form.setAttribute('action',link);
-    				  form.setAttribute('method','get');
-    				  form.reset();
-    				  form.submit();
-    			  return;
-    		  }  
-    		}	
-    }
-    </script> -->
-</head>
-<body>
+<%@include file="../includes/header.jsp" %>
+
     <div class="container mt-5">
     <h1 class="text-center" style="font-size:50px;">Modify</h1>
     </div>
-    <form action="/board/modify" method="post" id="registerform">
+    <form action="/board/modify" method="post">
     <div class="container w-50">
         <div class="row">
              <div class="form-group">
@@ -57,7 +23,8 @@
               <input type="hidden" name="bdnum" value='<c:out value ="${board.bdnum }"/>'/>
               <input type="hidden" name="pageNum" value='<c:out value ="${cri.pageNum }"/>'/>
               <input type="hidden" name="amount" value='<c:out value ="${cri.amount }"/>'/>
-              
+              <input type="hidden" name="type" value='<c:out value ="${cri.type }"/>'/>
+              <input type="hidden" name="keyword" value='<c:out value ="${cri.keyword }"/>'/>
               
               <div class="row mt-5">
             <div class="col-md-4 b">
@@ -95,19 +62,24 @@
   			
   			if(operation==='remove'){
   				formObj.attr("action","/board/remove");
+  			
   			}else if(operation==='list'){
   				formObj.attr("action","/board/list").attr("method","get");
-  				const pageNumTag=$("input[name='pageNum']").clone();
-  				const amountTag=$("input[name='amount']").clone();
+  				
+  				const pageNumTag = $("input[name='pageNum']").clone();
+  				const amountTag = $("input[name='amount']").clone();
+  				const keywordTag = $("input[name='keyword']").clone();
+  				const typeTag = $("input[name='type']").clone();
   				
   				formObj.empty();
+  				
   				formObj.append(pageNumTag);
   				formObj.append(amountTag);
+  				formObj.append(keywordTag);
+  				formObj.append(typeTag);
   			}
   			formObj.submit();
   			});
   		});
   	</script>
-   
-   
     </body>

@@ -29,17 +29,17 @@
               <div class="row mt-5">
             <div class="col-md-4 b">
             	<div class="d-grid gap-2">
-                    <button data-oper='modify' class="btn btn-lg btn-primary" type="submit">Modify</button>
+                    <button data-oper='modify' class="btn btn-lg btn-primary modbtn" type="submit">Modify</button>
                 </div>
 			</div>
             <div class="col-md-4 b">
             	<div class="d-grid gap-2">
-                    <button data-oper='remove' class="btn btn-lg btn-primary" type="submit">Delete</button>
+                    <button data-oper='remove' class="btn btn-lg btn-primary modbtn" type="submit">Delete</button>
                 </div>
             </div>
             <div class="col-md-4 b">
             	<div class="d-grid gap-2">
-                    <button data-oper='list' class="btn btn-lg btn-primary" type="submit">List</button>
+                    <button data-oper='list' class="btn btn-lg btn-primary modbtn" type="submit">List</button>
                 </div>
             </div>
         	</div>
@@ -53,7 +53,7 @@
   		$(document).ready(function(){
   			const formObj = $("form");
   			
-  			$('button').on("click",function(e){
+  			$('.modbtn').on("click",function(e){
   				e.preventDefault();
   			
   			let operation=$(this).data("oper");

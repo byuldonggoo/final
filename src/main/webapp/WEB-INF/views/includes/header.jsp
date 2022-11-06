@@ -14,8 +14,6 @@
      <script type="text/javascript" src="${path}/resources/js/jquery-3.6.0.min.js"></script>
      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
-     
-
 <style>
 
 @import url('https://fonts.googleapis.com/css2?family=Poor+Story&display=swap');
@@ -71,7 +69,8 @@ function doAction() {
     
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">Navbar</a>
+        <!-- 홈페이지이름, 누르면 메인화면으로 이동 -->
+          <a class="navbar-brand" href="/board/list">Navbar</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -119,10 +118,12 @@ function doAction() {
               <input class="form-control me-sm-2" type="text" placeholder="Search" name='keyword' value='<c:out value="${pageMaker.cri.keyword }"/>'/>
               <input type='hidden' name='pageNum' value='<c:out value="${pageMaker.cri.pageNum }"/>'>
               <input type='hidden' name='amount' value='<c:out value="${pageMaker.cri.amount }"/>'>
-              <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+              <button id="searchButton" class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
             </form>
             <!-- 검색끝 -->
             
           </div>
         </div>
       </nav>
+      
+      <script type="text/javascript"src="${path}/resources/js/searchForm.js"></script>

@@ -104,18 +104,21 @@ $(document).ready(function(){
 	prevcheck(prev);
 	nextcheck(next);
 	
+	//페이지 < 버튼
 	function prevcheck(prev){
 		if(prev!=='true'){
 			$("#prev").addClass('disabled');
 		}
 	}
 	
+	//페이지 > 버튼
 	function nextcheck(next){
 		if(next!=='true'){
 			$("#next").addClass('disabled');
 		}
 	}
 	
+	//페이지번호 클릭
 	const actionForm = $("#actionForm");
 	$(".page").on("click",function(e){
 		e.preventDefault();
@@ -123,40 +126,14 @@ $(document).ready(function(){
 		actionForm.submit();
 	});
 	
+	//글제목클릭
 	$(".move").on("click",function(e){
 		e.preventDefault();
 		actionForm.append("<input type='hidden' name='bdnum' value='" + $(this).attr("href") + "'>");  
 		actionForm.attr("action","/board/get");
 		actionForm.submit();
 	});
-	
-	const searchForm=$("#searchForm");
-	$("#searchForm button").on("click",function(e){
-		
-		/*
-		if(!searchForm.find("option:selected").val()){
-			alert("검색종류를 선택하세요");
-			return false;
-		}
-		*/
-		
-		//선택된 option값 읽기
-		if(!searchForm.find("input[name='keyword']").val()){
-			//sweetalert2 사용
-			Swal.fire({
-				  title: 'Error!',
-				  text: '키워드를 입력하세요',
-				  icon: 'error',
-				  confirmButtonText: 'OK'
-				})
-			return false;
-		}
-		//pageNum에 값 1 넣기
-		searchForm.find("input[name='pageNum']").val("1");
-		e.preventDefault();
-		
-		searchForm.submit();
-	})
+
 });
 
 </script>

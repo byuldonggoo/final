@@ -83,7 +83,10 @@ $(document).ready(function(){
 	
 	//모달창 글등록
 	let result='<c:out value="${result}"/>';
+	
 	checkModal(result);
+	
+	history.replaceState({},null,null);
 	
 	function checkModal(result){
 		if(result==='' || history.state){
@@ -129,6 +132,7 @@ $(document).ready(function(){
 	//글제목클릭
 	$(".move").on("click",function(e){
 		e.preventDefault();
+		
 		actionForm.append("<input type='hidden' name='bdnum' value='" + $(this).attr("href") + "'>");  
 		actionForm.attr("action","/board/get");
 		actionForm.submit();

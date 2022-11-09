@@ -6,11 +6,12 @@
 			//선택된 option값 읽기
 			if(!searchForm.find("input[name='keyword']").val()){
 				//sweetalert2 사용
-				Swal.fire({
-					  title: 'Error!',
-					  text: '키워드를 입력하세요',
-					  icon: 'error',
-					  confirmButtonText: 'OK'
+					Swal.fire({
+					  //position: 'top-end',
+					  //icon: 'Error',
+					  title: '키워드를 입력하세요',
+					  showConfirmButton: false,
+					  timer: 1500
 					})
 				return false;
 			}

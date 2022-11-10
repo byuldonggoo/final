@@ -8,7 +8,7 @@
     <div class="container mt-5">
     <h1 class="text-center" style="font-size:50px;">Register</h1>
     </div>
-    <form action="/board/register" method="post" id="registerform">
+    <form role="form" action="/board/register" method="post" id="registerform">
     <div class="container w-50">
         <div class="row">
             <div class="form-group">
@@ -19,6 +19,20 @@
                 <label style="font-size:30px;" for="exampleTextarea" class="form-label mt-4">Content</label>
                 <textarea class="form-control" id="exampleTextarea" rows="10" name="content"></textarea>
               </div>
+              
+              <!-- 파일 첨부 -->
+              
+              <div class="row mt-5 uploadResult">
+				</div>
+              
+              <div class="form-group">
+			      <label for="formFile" class="form-label mt-4" style="font-size:30px;">Image attach</label>
+			      <!-- accept는 이미지파일 올리도록 유도 설정 -->
+			      <input class="form-control" type="file" id="formFile" name='uploadFile' accept="image/*">
+			  </div>
+			  
+			  
+              
               <input type="hidden" name="writer" value="나중에"/><!-- 로그인하면 닉네임으로 작성자넣기 -->
               <input type="hidden" name="delcheck" value="N"/>
               <div class="mt-5">
@@ -29,5 +43,129 @@
         </div>
     </div>
     </form>
+    
+    <script>
+    
+    	$(document).ready(function(e){
+    		const formObj=$("form[role='form']");
+    		
+    		$("button[type='submit']").on("click",function(e){
+    			e.preventDefault();
+    			console.log("submit clicked");
+    			
+    			let str="";
+    			
+    			//첨부파일 정보를 hidden input에 넣어서 폼태그가 submit될 때 같이 전송
+    			$(".uploadResult li").each(function(i, obj){
+    				let jobj=$(obj);
+    				console.dir(jobj);
+    				
+    				str+="<input type='hidden' name='attachList["+i+"].fileName' value='"+jobj.data("filename")+"'>";
+    				str+="<input type='hidden' name='attachList["+i+"].uuid' value='"+jobj.data("uuid")+"'>";
+    				str+="<input type='hidden' name='attachList["+i+"].path' value='"+jobj.data("path")+"'>";
+    				//str+="<input type='hidden' name='attachList["+i+"].type' value='"+jobj.data("type")+"'>";
+    			});
+    			formObj.append(str).submit();
+    		});
+    		
+    		var regex = new RegExp("(.*?)\.(jpg|png)$");
+    	 	const maxSize=5242880; //5MB
+    	 	
+    	 	//확장자 체크
+    	 	
+    	 
+    	 	//파일사이즈 체크
+    	 	function checkExtension(fileName,fileSize){
+    	 		
+    	 		if(!regex.test(fileName)){
+        	 		alert("jpg와 png파일만 업로드 가능합니다.");
+        	 		return false;
+        	 	}
+    	 		
+    	 		if(fileSize>=maxSize){
+    	 			alert('파일 사이즈 초과');
+    	 			return false;
+    	 		}
+    	 		return true;
+    	 	}
+    	 	
+    	 	$("input[type='file']").change(function(e){
+    	 		const formData = new FormData();
+    	 		const inputFile=$("input[name='uploadFile']");
+    	 		const files=inputFile[0].files;
+    	 		
+    	 		for(let i = 0; i<files.length; i++){
+    	 			if(!checkExtension(files[i].name, files[i].size)){
+    	 				return false;
+    	 			}
+    	 			formData.append("uploadFile",files[i]);
+    	 		}
+    	 	
+    			$.ajax({
+    				url: '/uploadAjaxAction',
+    				processData:false,
+    				contentType:false,
+    				data:formData,
+    				type:'POST',
+    				dataType:'json',
+    				success:function(result){ //result는 list
+    					console.log(result);
+    					showUploadResult(result); //업로드 결과 처리 함수
+    				}
+    			});//$.ajax
+    	 	});
+    	 	
+    	 	//list를 받음.
+    	 	function showUploadResult(uploadResultArr){
+    	 		if(!uploadResultArr || uploadResultArr.length===0) {return;}
+    	 		
+    	 		const uploadUL=$(".uploadResult");
+    	 		
+    	 		let str="";
+    	 		
+    	 		$(uploadResultArr).each(function(i,obj){
+    	 			
+    	 			//이미지 타입
+    	 			if(obj.image){
+    	 				const fileCallPath = encodeURIComponent(obj.uploadPath+"/s_"+obj.uuid+"_"+obj.fileName);
+    	 				console.log(fileCallPath);
+    	 				
+    	 				str+="<li style='list-style:none;' data-path='"+obj.uploadPath+"'";
+    	 				str+=" data-uuid='"+obj.uuid+"' data-filename='"+obj.fileName+"' data-type='"+obj.image+"'";
+    	 				str+=" ><div>";
+    	 				str+="<span> "+obj.fileName + "</span>";
+    	 				str+="<span><button type='button' class='btn btn-primary' data-file=\'"+ fileCallPath +"\' data-type='image'>X</button></span>";
+    	 				str+="<img src='/display?fileName="+fileCallPath+"' class='img-thumbnail' style='width:130px; height:100px;'>";
+    	 				str+="</div>";
+    	 				str+="</li>";
+    	 			}
+    	 		});
+    	 		uploadUL.append(str);
+    	 	}
+    	 	
+    	 	$(".uploadResult").on("click","button",function(e){
+    	 		console.log("delete file");
+    	 		
+    	 		const targetFile=$(this).data("file");
+    	 		const type=$(this).data("type");
+    	 		
+    	 		const targetLi = $(this).closest("li");
+    	 		
+    	 		$.ajax({
+    	 			url:'/deleteFile',
+    	 			data:{fileName:targetFile, type:type},
+    	 			dataType:'text',
+    	 			type:'POST',
+    	 			success:function(result){
+    	 				alert(result);
+    	 				targetLi.remove();
+    	 			}
+    	 		})//$.ajax
+    	 	})//uploadResult click
+    	 	
+    	 	
+    	});
+    
+    </script>
     
     </body>

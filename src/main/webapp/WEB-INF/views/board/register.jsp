@@ -28,7 +28,7 @@
               <div class="form-group">
 			      <label for="formFile" class="form-label mt-4" style="font-size:30px;">Image attach</label>
 			      <!-- accept는 이미지파일 올리도록 유도 설정 -->
-			      <input class="form-control" type="file" id="formFile" name='uploadFile' accept="image/*">
+			      <input class="form-control" type="file" id="formFile" name='uploadFile' multiple="multiple" accept="image/*" required>
 			  </div>
 			  
 			  
@@ -62,11 +62,11 @@
     				
     				str+="<input type='hidden' name='attachList["+i+"].fileName' value='"+jobj.data("filename")+"'>";
     				str+="<input type='hidden' name='attachList["+i+"].uuid' value='"+jobj.data("uuid")+"'>";
-    				str+="<input type='hidden' name='attachList["+i+"].path' value='"+jobj.data("path")+"'>";
+    				str+="<input type='hidden' name='attachList["+i+"].uploadPath' value='"+jobj.data("path")+"'>";
     				//str+="<input type='hidden' name='attachList["+i+"].type' value='"+jobj.data("type")+"'>";
     			});
     			formObj.append(str).submit();
-    		});
+    		}); //end buttontype submit click
     		
     		var regex = new RegExp("(.*?)\.(jpg|png)$");
     	 	const maxSize=5242880; //5MB
@@ -126,8 +126,8 @@
     	 		$(uploadResultArr).each(function(i,obj){
     	 			
     	 			//이미지 타입
-    	 			if(obj.image){
-    	 				const fileCallPath = encodeURIComponent(obj.uploadPath+"/s_"+obj.uuid+"_"+obj.fileName);
+    	 			//if(obj.image){
+    	 				const fileCallPath = encodeURIComponent(obj.uploadPath+"/s_"+obj.uuid+"_"+obj.fileName); //섬네일 이미지 경로
     	 				console.log(fileCallPath);
     	 				
     	 				str+="<li style='list-style:none;' data-path='"+obj.uploadPath+"'";
@@ -138,7 +138,7 @@
     	 				str+="<img src='/display?fileName="+fileCallPath+"' class='img-thumbnail' style='width:130px; height:100px;'>";
     	 				str+="</div>";
     	 				str+="</li>";
-    	 			}
+    	 			//}
     	 		});
     	 		uploadUL.append(str);
     	 	}
@@ -162,7 +162,6 @@
     	 			}
     	 		})//$.ajax
     	 	})//uploadResult click
-    	 	
     	 	
     	});
     

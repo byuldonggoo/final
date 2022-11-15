@@ -6,7 +6,7 @@
 
 	<insert id ="insert">
 		insert into tbl_attach(uuid, uploadPath, fileName, bdnum)
-		values (#{uuid}, #{uploadPath}, #{fileName} #{bdnum})
+		values (#{uuid}, #{uploadPath}, #{fileName}, #{bdnum})
 	</insert>
 	
 	<delete id="delete">
@@ -15,6 +15,15 @@
 	
 	<select id="findByBdnum" resultType="com.spring.domain.BoardAttachVO">
 		select * from tbl_attach where bdnum=#{bdnum}
+	</select>
+	
+	<delete id="deleteAll">
+		delete tbl_attach where bdnum=#{bdnum}
+	</delete>
+	
+	
+	<select id="getOldFiles" resultType="com.spring.domain.BoardAttachVO">
+		select * from tbl_attach where uploadpath=to_char(sysdate-1,'yyyy\mm\dd')
 	</select>
 
 </mapper>

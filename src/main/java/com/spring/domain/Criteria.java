@@ -11,8 +11,8 @@ import lombok.ToString;
 @ToString
 public class Criteria {
 	
-	private int pageNum;
-	private int amount;
+	private int pageNum; //페이지번호
+	private int amount; //한 페이지당 몇개의 데이터를 보여줄 것인지
 	
 	private String type;
 	private String keyword;
@@ -31,11 +31,12 @@ public class Criteria {
 	}
 	
 	public String getListLink() {
+		//UriComponentsBuilder는 쿼리스트링을 손쉽게 처리할 수 있는 클래스
 		UriComponentsBuilder builder = UriComponentsBuilder.fromPath("")
 				.queryParam("pageNum", this.pageNum)
 				.queryParam("amount", this.getAmount())
-				.queryParam("pageNum", this.getType())
-				.queryParam("pageNum", this.getKeyword());
+				.queryParam("type", this.getType())
+				.queryParam("keyword", this.getKeyword());
 		
 		return builder.toUriString();
 	}

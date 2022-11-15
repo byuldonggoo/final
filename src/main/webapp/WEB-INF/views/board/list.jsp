@@ -16,9 +16,15 @@
         <div class="col-md-4 b">
             <div class="card mb-3">
                 <h3 class="card-header"><a class='move' href='<c:out value="${board.bdnum}"/>'><c:out value="${board.bdtitle}"/></a></h3>
-                <img src="${path}/resources/img/parrot.jpg" class="d-block user-select-none" width="100%" height="100%" aria-label="Placeholder: Image cap" focusable="false" role="img" preserveAspectRatio="xMidYMid slice" viewBox="0 0 318 180" style="font-size:1.125rem;text-anchor:middle">
+                
+                <div id="uploadResultlist">
+                <img src='${path}/resources/img/<c:out value="${board.attachList[0].uploadPath}"/>/<c:out value="${board.attachList[0].uuid}"/>_<c:out value="${board.attachList[0].fileName}"/>' class="d-block user-select-none" width="100%" height="100%" aria-label="Placeholder: Image cap" focusable="false" role="img" preserveAspectRatio="xMidYMid slice" viewBox="0 0 318 180" style="font-size:1.125rem;text-anchor:middle">
                     <rect width="100%" height="100%" fill="#868e96"></rect>
                 </img>
+                
+                
+                </div>
+                
             </div>
         </div>
         </c:forEach>
@@ -75,7 +81,6 @@
     </div>
   </div>
 </div>
-
 
 <script type="text/javascript">
 

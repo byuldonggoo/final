@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,11 +51,13 @@ public class BoardController {
 	}
 	
 	@GetMapping("/register")
+	@PreAuthorize("isAuthenticated()") //스프링시큐리티 로그인 하지 않은 경우 로그인화면으로 이동. 어떠한 사용자든 로그인이 성공한 사용자만 해당 기능 사용가능.
 	public void register() {
 		//입력페이지를 보여주는 역할만을 하기 때문에 별도의 처리가 필요하지 않음.
 	}
 	
 	@PostMapping("/register")
+	@PreAuthorize("isAuthenticated()")
 	public String register(BoardVO board, RedirectAttributes rttr) {
 		log.info("=========================");
 		log.info("register:" + board);

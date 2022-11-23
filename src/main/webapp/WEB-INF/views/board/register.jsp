@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
 <%@include file="../includes/header.jsp" %>
 
@@ -14,6 +15,10 @@
             <div class="form-group">
                 <label style="font-size:30px;" class="col-form-label mt-4" for="inputDefault">Title</label>
                 <input type="text" class="form-control" placeholder="" name="bdtitle">
+              </div>
+              <div class="form-group">
+                <label style="font-size:30px;" class="col-form-label mt-4" for="inputDefault">Writer</label>
+                <input class="form-control" name="writer" value="<sec:authentication property='principal.username'/>" readonly="readonly">
               </div>
               <div class="form-group">
                 <label style="font-size:30px;" for="exampleTextarea" class="form-label mt-4">Content</label>
@@ -31,9 +36,7 @@
 			      <input class="form-control" type="file" id="formFile" name='uploadFile' multiple="multiple" accept="image/*" required>
 			  </div>
 			  
-			  
               
-              <input type="hidden" name="writer" value="나중에"/><!-- 로그인하면 닉네임으로 작성자넣기 -->
               <input type="hidden" name="delcheck" value="N"/>
               <div class="mt-5">
                 <div class="d-grid gap-2">
